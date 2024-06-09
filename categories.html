@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expense Categories</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f7f9;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    h1 {
+      text-align: center;
+    }
+    
+    form {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    button:hover {
+      background-color: #0056b3;
+    }
+    
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    
+    li {
+      margin-bottom: 10px;
+    }
+    
+    li span {
+      margin-right: 10px;
+    }
+    
+    .edit, .delete {
+      background-color: #f44336;
+      color: #fff;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    .edit:hover, .delete:hover {
+      background-color: #d32f2f;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Expense Categories</h1>
+    <form id="category-form">
+      <label for="category-name">New Category Name:</label>
+      <input type="text" id="category-name" required>
+      <button type="submit">Add Category</button>
+    </form>
+    <ul id="category-list">
+      <!-- Existing categories will be populated dynamically -->
+    </ul>
+  </div>
+
+  <script>
+    // Retrieve categories from localStorage or initialize empty array
+    let categories = JSON.parse(localStorage.getItem('categories')) || [];
+
+    // Function to save categories to localStorage
+    function saveCategories() {
+      localStorage.setItem('categories', JSON.stringify(categories));
+    }
+
+    // Function to display categories
+    function displayCategories() {
+      const categoryList = document.getElementById('category-list');
+      categoryList.innerHTML = '';
+      categories.forEach((category, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = `<span>${category}</span><button class="edit" data-index="${index}">Edit</button><button class="delete" data-index="${index}">Delete</button>`;
+        categoryList.appendChild(li);
+      });
+    }
+
+    // Function to add a new category
+    function addCategory(categoryName) {
+      categories.push(categoryName);
+      saveCategories();
+      displayCategories();
+    }
+
+    // Function to delete a category
+    function deleteCategory(index) {
+      categories.splice(index, 1);
+      saveCategories();
+      displayCategories();
+    }
+
+    // Function to edit a category
+    function editCategory(index, newName) {
+      categories[index] = newName;
+      saveCategories();
+      displayCategories();
+    }
+
+    // Event listener for form submission to add a new category
+    document.getElementById('category-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const categoryName = document.getElementById('category-name').value.trim();
+      if (categoryName) {
+        addCategory(categoryName);
+        document.getElementById('category-name').value = '';
+      }
+    });
+
+    // Event delegation for edit and delete buttons
+    document.getElementById('category-list').addEventListener('click', function(event) {
+      if (event.target.classList.contains('delete')) {
+        const index = event.target.dataset.index;
+        if (confirm('Are you sure you want to delete this category?')) {
+          deleteCategory(index);
+        }
+      }
+      if (event.target.classList.contains('edit')) {
+        const index = event.target.dataset.index;
+        const newName = prompt('Enter the new name for this category:');
+        if (newName) {
+          editCategory(index, newName.trim());
+        }
+      }
+    });
+
+    // Display categories on page load
+    displayCategories();
+  </script>
+</body>
+</html>

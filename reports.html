@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expense Reports</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    body {
+      background-color: #f4f7f9; /* Light gray background */
+      color: #333; /* Dark text color */
+      font-family: Arial, sans-serif; /* A consistent font for better readability */
+      margin: 0; /* Remove default margin */
+      padding: 0; /* Remove default padding */
+    }
+
+    header {
+      background-image: url('https://www.bestreviewguide.com/images/article/Truthfinder%20background%20check%20-%20how%20much%20does%20it%20cost.jpeg');
+      background-size: cover;
+      background-position: center;
+      color: white;
+      padding: 30px 40px; /* Increased padding to adjust height */
+      text-align: center;
+      border-bottom: 6px solid #fff;
+      position: relative; /* Added relative positioning */
+    }
+
+    header::after {
+      content: ''; /* Create pseudo-element */
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+      z-index: -1; /* Place behind the text */
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #eeeaea; /* White text color */
+      position: relative; /* Added relative positioning */
+      z-index: 1; /* Ensure the text is above the background */
+      margin-right: 750px;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8); /* Added text shadow */
+    }
+    
+    .container {
+      max-width: 1200px; /* Set maximum width for the main content */
+      margin: 20px auto; /* Center the container and add margin */
+      padding: 0 20px; /* Add padding for better spacing */
+    }
+
+    .summary, .graphs, .detailed-list, .filters {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .summary-details p, .filters form {
+      margin-bottom: 10px;
+    }
+
+    table {
+      width: 95%;
+      margin-left:20px;
+      border-collapse: collapse;
+    }
+
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .expense-distribution {
+      text-align: left; /* Align text to the left */
+      margin: 0 auto; /* Center horizontally within the container */
+      width: 100%; /* Full width */
+    }
+
+    .form-group {
+      width: 100%; /* Set container width to 100% */
+      text-align: center; /* Center the content */
+      white-space: nowrap; /* Prevent elements from wrapping */
+      overflow-x: auto; /* Enable horizontal scrolling if needed */
+    }
+
+    .form-group select {
+      width: auto; /* Let the select element adjust its width based on content */
+      margin: 0 5px; /* Adjust margin as needed */
+      display: inline-block;
+    }
+
+    .graphs {
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Center horizontally */
+    }
+
+    .category-details-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .category-detail {
+      display: flex;
+      align-items: center;
+      background-color: white;
+      padding: 10px;
+      margin: 5px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 200px;
+    }
+
+    .category-detail i {
+      margin-right: 10px;
+      font-size: 18px;
+    }
+
+    .category-info {
+      text-align: left;
+      font-size: 0.9rem;
+    }
+    /* Icon styles */
+    .bottom-nav i {
+      margin-right: 5px;
+    }
+    /* CSS styles for bottom navigation */
+    .bottom-nav {
+      position: fixed; /* Fix it at the bottom of the page */
+      bottom: 0;
+      left: 0;
+      width: 100%; /* Ensure it spans the full width of the page */
+      background-color: #007bff; /* Background color for visibility */
+      border-top: 1px solid #dee2e6;
+      box-shadow: 0px -2px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    }
+
+    .bottom-nav ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .bottom-nav li {
+      padding: 10px;
+    }
+
+    .bottom-nav a {
+      text-decoration: none;
+      color: #ffffff; /* White text color */
+    }
+
+    .bottom-nav a:hover {
+      color: #ffffff; /* White text color on hover */
+    }
+
+    
+
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <h1>Expense Reports</h1>
+  </header>
+
+  <div class="container">
+    <!-- Expense Summary -->
+    <section class="summary">
+
+      <div style="display: flex; align-items: center;">
+      <h2 style="font-weight: bold; font-size: 30px; margin-left:20px;">Expense Summary</h2>
+      <img src="expense.png" alt="Expenses" style="width: 30px; height: auto; vertical-align: middle; margin-left:10px;">
+     </div>
+
+      <div class="summary-details">
+        <p id="total-expenses" style="margin-left:20px;">Total Expenses: RM 0</p>
+        <p id="average-daily-expenses" style="margin-left:20px;">Average Daily Expenses: RM 0</p>
+        <!-- Add more summary statistics as needed -->
+      </div>
+    </section>
+
+    <!-- Graphs and Charts -->
+    <section class="graphs">
+      <div class="expense-distribution">
+
+        <div style="display: flex; align-items: center;">
+        <h2 style="font-weight: bold; font-size: 30px; margin-left:20px;">Expense Distribution</h2>
+        <img src="accounting.png" alt="Budget" style="width: 30px; height: auto; vertical-align: middle; margin-top:-12px; margin-left:10px;">
+       </div>
+      </div>
+      <br>
+      <canvas id="expenseChart" width="500" height="450"></canvas>
+      <div id="category-details" class="category-details-container">
+        <!-- Category details will be populated here -->
+      </div>
+    </section>
+
+  <!-- Filter Option -->
+  <section class="filters">
+    <div style="display: flex; align-items: center;">
+      <h2 style="font-weight: bold; font-size: 25px; margin-left:25px;">Filter Option</h2>
+      <img src="filter.png" alt="Filter" style="width: 28px; height: auto; vertical-align: middle; margin-top:-6px; margin-left:10px;">
+    </div>
+    <br>
+    <form id="filter-form">
+      <div class="form-group row" style="display: flex; align-items: center; flex-wrap: wrap;">
+        <div class="col-sm-2" style="margin-left: -10px; font-size:18px;">
+          <label for="start-date" class="col-form-label" style="margin-right: 5px;">Start Date</label>
+        </div>
+        <div class="col-sm-3">
+          <input type="date" class="form-control" id="start-date" style="width: 210px; margin-left: -60px;">
+        </div>
+        <div class="col-sm-2" style="margin-left: -80px; font-size:18px;">
+          <label for="end-date" class="col-form-label" style="margin-right: 5px;">End Date</label>
+        </div>
+        <div class="col-sm-3">
+          <input type="date" class="form-control" id="end-date" style="width: 210px; margin-left: -60px;">
+        </div>
+
+        <div class="col-sm-2" style="margin-left: -60px; font-size:18px;">
+          <label for="category" class="col-form-label" style="margin-right: 5px;">Category</label>
+          <select class="form-control" id="category">
+            <option value="" selected>All Categories</option>
+            <option value="Housing">Housing</option>
+            <option value="Transportation">Transportation</option>
+            <option value="Food">Food</option>
+            <option value="Utilities">Utilities</option>
+            <option value="Clothing">Clothing</option>
+            <option value="Healthcare">Healthcare</option>
+            <option value="Insurance">Insurance</option>
+            <option value="Household">Household Items</option>
+            <option value="Personal">Personal</option>
+            <option value="Debt">Debt</option>
+            <option value="Retirement">Retirement</option>
+            <option value="Education">Education</option>
+            <option value="Savings">Savings</option>
+            <option value="Gifts">Gifts</option>
+            <option value="Entertainment">Entertainment</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row" style="justify-content: flex-end; margin-right: 20px; margin-top:20px">
+        <div class="col-sm-12 text-right">
+          <button type="submit" class="btn btn-primary">Apply Filters</button>
+        </div>
+      </div>
+    </form>
+  </section>
+  
+
+      <!-- Detailed Expense List -->
+      <section class="detailed-list">
+        <div style="display: flex; align-items: center;">
+        <h2 style="font-weight: bold; font-size: 25px; margin-left:20px;">Detailed Expense List</h2>
+        <img src="list-text.png" alt="Expense List" style="width: 25px; height: auto; vertical-align: middle; margin-top:-7px; margin-left:10px;">
+      </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Category</th>
+              <th>Date</th>  
+              <th>Amount (RM)</th>
+            </tr>
+          </thead>
+          <tbody id="expense-list">
+            <!-- Rows will be populated dynamically -->
+          </tbody>
+        </table>
+      </section>
+  
+    
+  <!-- Bottom navigation menu -->
+  <div class="bottom-nav">
+    <ul>
+      <li><a href="index.html"><i class="fas fa-home"></i> Expense Tracker</a></li>
+      <li><a href="budgets.html"><i class="fas fa-chart-line"></i> Budgets</a></li>
+      <li><a href="reports.html" class="active"><i class="fas fa-file-alt"></i> Reports</a></li>
+    </ul>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2024 Expense Tracker</p>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Function to retrieve expenses from localStorage
+    function getExpenses() {
+      const expenses = localStorage.getItem('expenses');
+      return expenses ? JSON.parse(expenses) : [];
+    }
+
+    // Function to calculate total and average expenses
+    function calculateSummary(expenses) {
+      const totalExpenses = expenses.reduce((total, expense) => total + parseFloat(expense.amount), 0);
+      const days = new Set(expenses.map(expense => expense.date)).size;
+      const averageDailyExpenses = totalExpenses / days || 0;
+
+      document.getElementById('total-expenses').innerText = `Total Expenses: RM ${totalExpenses.toFixed(2)}`;
+      document.getElementById('average-daily-expenses').innerText = `Average Daily Expenses: RM ${averageDailyExpenses.toFixed(2)}`;
+    }
+
+    // Function to populate the expense list
+    function populateExpenseList(expenses) {
+      const expenseList = document.getElementById('expense-list');
+      expenseList.innerHTML = '';
+
+      expenses.forEach(expense => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${expense.description}</td>
+          <td>${expense.category}</td>
+          <td>${expense.date}</td>
+          <td>RM ${parseFloat(expense.amount).toFixed(2)}</td>
+        `;
+        expenseList.appendChild(row);
+      });
+    }
+
+    function renderChartAndCategory(expenses) {
+      const ctx = document.getElementById('expenseChart').getContext('2d');
+      const categories = [...new Set(expenses.map(expense => expense.category))];
+      const categorySums = categories.map(category => {
+        return expenses
+          .filter(expense => expense.category === category)
+          .reduce((total, expense) => total + parseFloat(expense.amount), 0);
+      });
+
+      const totalExpenses = categorySums.reduce((total, sum) => total + sum, 0);
+      const iconMapping = {
+        'Housing': { icon: 'fas fa-home', color: '#fee6e3' },
+        'Transportation': { icon: 'fas fa-car', color: '#f6e07c' },
+        'Food': { icon: 'fas fa-utensils', color: '#e1e1e1' },
+        'Utilities': { icon: 'fas fa-bolt', color: '#c6c6f5' },
+        'Clothing': { icon: 'fas fa-tshirt', color: '#bbf3b2' },
+        'Healthcare': { icon: 'fas fa-heartbeat', color: '#bafcd2' },
+        'Insurance': { icon: 'fas fa-shield-alt', color: '#b2ecdc' },
+        'Household': { icon: 'fas fa-couch', color: '#b7cbf8' },
+        'Personal': { icon: 'fas fa-user', color: '#e2cef9' },
+        'Debt': { icon: 'fas fa-money-bill-wave', color: '#f5d5f7' },
+        'Retirement': { icon: 'fas fa-piggy-bank', color: '#fcbce9' },
+        'Education': { icon: 'fas fa-book', color: '#99ebed' },
+        'Savings': { icon: 'fas fa-piggy-bank', color: '#febacc' },
+        'Gifts': { icon: 'fas fa-gift', color: '#d2eef7' },
+        'Entertainment': { icon: 'fas fa-film', color: '#f1fad5' },
+      };
+
+
+      const backgroundColors = categories.map(category => iconMapping[category].color || '#6c757d');
+
+      new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: categories,
+          datasets: [{
+            label: 'Expenses',
+            data: categorySums,
+            backgroundColor: backgroundColors,
+          }]
+        },
+        options: {
+          maintainAspectRatio: false,
+          responsive: false,
+          width: 500,
+          height: 450
+        }
+      });
+
+      // Populate category details below the chart
+      const categoryDetailsContainer = document.getElementById('category-details');
+      categoryDetailsContainer.innerHTML = '';
+
+      categories.forEach((category, index) => {
+        const percentage = ((categorySums[index] / totalExpenses) * 100).toFixed(2);
+        const total = categorySums[index].toFixed(2);
+        const { icon, color } = iconMapping[category] || { icon: 'fas fa-question', color: '#6c757d' };
+
+        const detailDiv = document.createElement('div');
+        detailDiv.className = 'category-detail';
+        detailDiv.innerHTML = `
+          <i class="${icon}" style="color: ${color};"></i>
+          <div class="category-info">
+            <strong>${category}</strong><br>
+            ${percentage}% RM ${total}
+          </div>
+        `;
+
+        categoryDetailsContainer.appendChild(detailDiv);
+      });
+    }
+
+    // Function to filter expenses based on form inputs
+    function filterExpenses(expenses, startDate, endDate, category) {
+      return expenses.filter(expense => {
+        const dateCondition = (!startDate || new Date(expense.date) >= new Date(startDate)) &&
+          (!endDate || new Date(expense.date) <= new Date(endDate));
+        const categoryCondition = !category || expense.category === category;
+        return dateCondition && categoryCondition;
+      });
+    }
+
+    // Main function to load and display expenses
+    function loadExpenses() {
+      const expenses = getExpenses();
+
+      const startDate = document.getElementById('start-date').value;
+      const endDate = document.getElementById('end-date').value;
+      const category = document.getElementById('category').value;
+
+      const filteredExpenses = filterExpenses(expenses, startDate, endDate, category);
+
+      if (filteredExpenses.length === 0) {
+        alert("No expenses found for the selected criteria.");
+        return;
+      }
+
+      calculateSummary(filteredExpenses);
+      populateExpenseList(filteredExpenses);
+      renderChartAndCategory(filteredExpenses);
+    }
+
+    // Event listener for form submission
+    document.getElementById('filter-form').addEventListener('submit', function (event) {
+      event.preventDefault();
+      loadExpenses();
+    });
+
+    // Initial load of expenses on page load
+    window.onload = loadExpenses;
+  </script>
+</body>
+</html>
+
